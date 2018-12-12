@@ -30,5 +30,11 @@ steps:
     Xvfb :1 -screen 5 1024x768x8 &
     cd lib/PuppeteerSharp.Tests
     export DISPLAY=:1.5
-    dotnet test -f $(framework) -s test.runsettings
+    dotnet test -f $(framework) -s test.runsettings --logger trx --collect "Code coverage"
   displayName: 'Unit testing'
+- script: 
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+- task: PublishBuildArtifacts@1
